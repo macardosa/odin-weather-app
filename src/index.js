@@ -14,20 +14,16 @@ for (const city of [
     cityElement.render();
 }
 
-
-document
-    .querySelector(".search-form")
-    .addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        const input = document.querySelector('.search-bar');
-        const location = input.value || "";
-
-        if (location) {
-            getWeatherData(input.value)
-                .then(data => {
-                    displayWeatherInfo(data);
-                    console.table(data);
-                });
+// Capture user input to add new cities
+const input = document.querySelector('.search-bar');
+input.addEventListener('keydown', async (e) => {
+    if (e.key === 'Enter') {
+        const locationName = input.value || "";
+        if (locationName) {
+            const locationElement = await WeatherDisplay.create(locationName);
+            locationElement.render();
+            input.value = "";
+            input.blur();
         }
-    });
+    }
+})
