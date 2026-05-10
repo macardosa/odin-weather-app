@@ -1,0 +1,51 @@
+{
+  "name": "odin-weather-app",
+  "version": "1.0.0",
+  "description": "This webpage allows you to see the weather in your city.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack serve --open --config webpack.dev.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"src/**/*.js\"",
+    "format:check": "prettier --check \"src/**/*.js\"",
+    "build": "webpack --config webpack.prod.js",
+    "deploy": "bash deploy.sh",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/macardosa/odin-weather-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/macardosa/odin-weather-app/issues"
+  },
+  "homepage": "https://github.com/macardosa/odin-weather-app#readme",
+  "devDependencies": {
+    "@eslint/css": "^1.2.0",
+    "@eslint/js": "^10.0.1",
+    "@eslint/json": "^1.2.0",
+    "css-loader": "^7.1.4",
+    "eslint": "^10.3.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "globals": "^17.6.0",
+    "html-loader": "^5.1.0",
+    "html-webpack-plugin": "^5.6.7",
+    "prettier": "3.8.3",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.106.2",
+    "webpack-cli": "^7.0.2",
+    "webpack-dev-server": "^5.2.3",
+    "webpack-merge": "^6.0.1"
+  },
+  "dependencies": {
+    "@fontsource/inter": "^5.2.8",
+    "@fontsource/open-sans": "^5.2.7",
+    "date-fns": "^4.1.0"
+  }
+}
