@@ -17,10 +17,38 @@ main {
     min-height: 0;
 }
 
+header {
+    margin: 0 auto 10px;
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 3fr 1fr;
+    align-items: center;
+    justify-items: center;
+    max-width: 400px;
+    column-gap: 20px;
+    /* border: 1px solid red; */
+}
+
 h1 {
-    margin-bottom: 20px;
     text-align: center;
     font-size: 3.0rem;
+}
+
+.refresh-icon {
+    display: block;
+    width: 50px;
+    align-self: center;
+    justify-self: end;
+    transition: transform 0.2s ease;
+}
+
+.refresh-icon:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+.last-update {
+    font-size: 1.1rem;
 }
 
 .search-form {
@@ -72,7 +100,7 @@ h1 {
 
 .card {
     background-color: rgba(128, 0, 128, 0.1);
-    box-shadow: 1px 2px 12px rgb(218, 163, 218);
+    box-shadow: 1px 2px 12px #daa3da;
     border-radius: 12px;
     padding: 5px 10px;
     display: grid;

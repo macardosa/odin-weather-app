@@ -32,11 +32,16 @@ export class WeatherTracker {
         try {
             const url = this.getApiUrl();
             const response = await fetch(url);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error ${response.status}`);
+            }
+
             const json = await response.json();
             this.data = this.parseJson(json);
         } catch (error) {
             console.log('Invalid input data passed', error);
-            this.data = null;
+            // this.data = null;
         }
     }
 

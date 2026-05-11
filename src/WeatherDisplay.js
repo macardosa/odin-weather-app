@@ -3,6 +3,9 @@ import { WeatherTracker } from "./WeatherTracker.js";
 export class WeatherDisplay {
     constructor(tracker) {
         this.tracker = tracker;
+        this.card = document.createElement('div');
+        this.card.classList.add('card');
+        this.lastUpdateElement = document.querySelector('.last-update');
     }
 
     static async create(location) {
@@ -17,12 +20,18 @@ export class WeatherDisplay {
         return iconFile.default;
     }
 
-    render() {
+    addToDOM() {
         const cardsWrapper = document.querySelector('.cards-wrapper');
+        cardsWrapper.appendChild(this.card);
+    }
 
-        const card = document.createElement('div');
-        card.classList.add('card');
+    showLastTimeUpdated() {
+        this.lastUpdate = new Date();
+        this.lastUpdateElement.textContent =
+            `Updated ${this.lastUpdate.toLocaleTimeString()}`;
+    }
 
+    render() {
         // name of the location
         const locationName = document.createElement('h2');
         locationName.textContent = this.tracker.data.location;
@@ -58,10 +67,51 @@ export class WeatherDisplay {
         shortDescription.textContent = this.tracker.data.description;
         shortDescription.classList.add('card-description');
 
-        card.append(
+        this.card.append(
             locationName, weatherIcon, tempAndHumid,
             shortDescription,
         );
-        cardsWrapper.appendChild(card);
+
+        this.addToDOM();
+        this.showLastTimeUpdated();
+    }
+
+    async refresh() {
+        await this.tracker.fetchData();
+    }
+
+    async update() {
+        await this.refresh();
+        
+        // name of the location
+        const locationName = this.card.querySelector('.card-location');
+        locationName.textContent = this.tracker.data.location;
+
+        // weather icon reflecting the weather
+        const weatherIcon = this.card.querySelector('.card-icon');
+        this.getIcon(this.tracker.data.icon)
+            .then(src => {
+                weatherIcon.src = src;
+            });
+
+        // current temperature 
+        const tempAndHumid = this.card.querySelector('.card-temp-n-humid');
+
+        // current temperature
+        const temp = this.card.querySelector('.card-temperature');
+        const degrees = '\u00B0';
+        temp.textContent = `${this.tracker.temperature}${degrees}`;
+
+        // humidity
+        const humidity = this.card.querySelector('.card-humidity');
+        humidity.textContent = `Humidity: ${this.tracker.humidity}%`;
+
+        tempAndHumid.append(temp, humidity);
+
+        // short description of the current conditions
+        const shortDescription = this.card.querySelector('.card-description');
+        shortDescription.textContent = this.tracker.data.description;
+
+        this.showLastTimeUpdated();
     }
 }
