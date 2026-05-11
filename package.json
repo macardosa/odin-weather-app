@@ -10,7 +10,7 @@
     "format": "prettier --write \"src/**/*.js\"",
     "format:check": "prettier --check \"src/**/*.js\"",
     "build": "webpack --config webpack.prod.js",
-    "deploy": "bash deploy.sh",
+    "deploy": "npm run build && gh-pages -d dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -33,6 +33,7 @@
     "eslint": "^10.3.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
+    "gh-pages": "^6.3.0",
     "globals": "^17.6.0",
     "html-loader": "^5.1.0",
     "html-webpack-plugin": "^5.6.7",
