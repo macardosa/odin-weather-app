@@ -82,35 +82,25 @@ export class WeatherDisplay {
 
     async update() {
         await this.refresh();
-        
+
         // name of the location
-        const locationName = this.card.querySelector('.card-location');
-        locationName.textContent = this.tracker.data.location;
+        this.card.querySelector('.card-location').textContent = this.tracker.data.location;
 
         // weather icon reflecting the weather
-        const weatherIcon = this.card.querySelector('.card-icon');
         this.getIcon(this.tracker.data.icon)
             .then(src => {
-                weatherIcon.src = src;
+                this.card.querySelector('.card-icon').src = src;
             });
 
-        // current temperature 
-        const tempAndHumid = this.card.querySelector('.card-temp-n-humid');
-
         // current temperature
-        const temp = this.card.querySelector('.card-temperature');
-        const degrees = '\u00B0';
-        temp.textContent = `${this.tracker.temperature}${degrees}`;
+        this.card.querySelector('.card-temperature').textContent = `${this.tracker.temperature}\u00B0`;
 
         // humidity
-        const humidity = this.card.querySelector('.card-humidity');
-        humidity.textContent = `Humidity: ${this.tracker.humidity}%`;
-
-        tempAndHumid.append(temp, humidity);
+        this.card.querySelector('.card-humidity').textContent = 
+            `Humidity: ${this.tracker.humidity}%`;
 
         // short description of the current conditions
-        const shortDescription = this.card.querySelector('.card-description');
-        shortDescription.textContent = this.tracker.data.description;
+        this.card.querySelector('.card-description').textContent = this.tracker.data.description;
 
         this.showLastTimeUpdated();
     }
