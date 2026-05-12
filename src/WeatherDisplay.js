@@ -1,11 +1,11 @@
 import { WeatherTracker } from "./WeatherTracker.js";
+import closeSvg from './assets/icons/close.svg';
 
 export class WeatherDisplay {
+    static DEG = '\u00B0';
+
     constructor(tracker) {
         this.tracker = tracker;
-        this.card = document.createElement('div');
-        this.card.classList.add('card');
-        this.lastUpdateElement = document.querySelector('.last-update');
     }
 
     static async create(location) {
@@ -20,18 +20,9 @@ export class WeatherDisplay {
         return iconFile.default;
     }
 
-    addToDOM() {
-        const cardsWrapper = document.querySelector('.cards-wrapper');
-        cardsWrapper.appendChild(this.card);
-    }
-
-    showLastTimeUpdated() {
-        this.lastUpdate = new Date();
-        this.lastUpdateElement.textContent =
-            `Updated ${this.lastUpdate.toLocaleTimeString()}`;
-    }
-
-    render() {
+    renderCard() {
+        this.card = document.createElement('div');
+        
         // name of the location
         const locationName = document.createElement('h2');
         locationName.textContent = this.tracker.data.location;
@@ -52,8 +43,7 @@ export class WeatherDisplay {
         // current temperature
         const temp = document.createElement('div');
         temp.classList.add('card-temperature');
-        const degrees = '\u00B0';
-        temp.textContent = `${this.tracker.temperature}${degrees}`;
+        temp.textContent = `${this.tracker.temperature}${WeatherDisplay.DEG}`;
 
         // humidity
         const humidity = document.createElement('div');
@@ -72,8 +62,8 @@ export class WeatherDisplay {
             shortDescription,
         );
 
-        this.addToDOM();
-        this.showLastTimeUpdated();
+        this.card.classList.add('card');
+        return [this.card];
     }
 
     async refresh() {
@@ -93,15 +83,58 @@ export class WeatherDisplay {
             });
 
         // current temperature
-        this.card.querySelector('.card-temperature').textContent = `${this.tracker.temperature}\u00B0`;
+        this.card.querySelector('.card-temperature').textContent = `${this.tracker.temperature}${WeatherDisplay.DEG}`;
 
         // humidity
-        this.card.querySelector('.card-humidity').textContent = 
+        this.card.querySelector('.card-humidity').textContent =
             `Humidity: ${this.tracker.humidity}%`;
 
         // short description of the current conditions
         this.card.querySelector('.card-description').textContent = this.tracker.data.description;
+    }
 
-        this.showLastTimeUpdated();
+    renderDetails() {
+        // heading
+        document.querySelector('header').classList.add('details');
+        const heading = document.querySelector('header h1');
+        heading.textContent = `Weather in ${this.tracker.location}`;   
+
+        // show forecast
+        this.sevenDaysForecastCard = document.createElement('div');
+        this.sevenDaysForecastCard.classList.add('forecast-card');
+
+        const h2 = document.createElement('h2');
+        h2.textContent = '7-day forecast';
+        this.sevenDaysForecastCard.appendChild(h2);
+
+        this.tracker.data.forecast.forEach((item) => {
+            // display day of the week
+            const dayOfTheWeekEl = document.createElement('div');
+            dayOfTheWeekEl.classList.add('forecast-day');
+            dayOfTheWeekEl.textContent = item.dayOfTheWeek;
+
+            // weather icon for that day
+            const weatherIcon = document.createElement('img');
+            this.getIcon(item.icon)
+                .then(src => {
+                    weatherIcon.src = src;
+                });
+            weatherIcon.classList.add('forecast-icon');
+
+            // min/max temperatures using feelslike instead of actual temp
+            const minmax = document.createElement('div');
+            minmax.classList.add('forecast-minmax');
+            minmax.textContent = `${item.feelslikemin}${WeatherDisplay.DEG} / ${item.feelslikemax}${WeatherDisplay.DEG}`;
+
+            this.sevenDaysForecastCard.append(dayOfTheWeekEl, weatherIcon, minmax);
+        });
+
+        // control buttons
+        this.closeBtn = document.createElement('img');
+        this.closeBtn.src = closeSvg;
+        this.closeBtn.alt = '';
+        this.closeBtn.classList.add('close-icon');
+
+        return [this.sevenDaysForecastCard, this.closeBtn];
     }
 }

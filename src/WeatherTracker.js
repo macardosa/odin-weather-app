@@ -9,7 +9,7 @@ export class WeatherTracker {
     }
 
     parseJson(json) {
-        return {
+        const obj = {
             "location": json?.address,
             "description": json?.description,
             "conditions": json?.currentConditions?.conditions,
@@ -26,6 +26,20 @@ export class WeatherTracker {
             "humidity": json?.currentConditions?.humidity,
             "visibility": json?.currentConditions?.visibility,
         }
+
+        obj.forecast = [];
+        json?.days?.slice(0, 7).map((day, index) => {
+            obj.forecast[index] = {
+                'dayOfTheWeek': (new Date(day.datetime)).toLocaleDateString('en-US', 
+                    { weekday: "long"}
+                ),
+                'icon': day.icon,
+                'feelslikemin': day.feelslikemin,
+                'feelslikemax': day.feelslikemax,
+            };
+        })
+
+        return obj;
     }
 
     async fetchData() {
@@ -39,6 +53,7 @@ export class WeatherTracker {
 
             const json = await response.json();
             this.data = this.parseJson(json);
+            this.lastUpdate = new Date();
         } catch (error) {
             console.log('Invalid input data passed', error);
             // this.data = null;
