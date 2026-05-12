@@ -22,7 +22,7 @@ export class WeatherDisplay {
 
     renderCard() {
         this.card = document.createElement('div');
-        
+
         // name of the location
         const locationName = document.createElement('h2');
         locationName.textContent = this.tracker.data.location;
@@ -93,19 +93,37 @@ export class WeatherDisplay {
         this.card.querySelector('.card-description').textContent = this.tracker.data.description;
     }
 
+    windDirection(deg) {
+        const directions = [
+            "N", "NNE", "NE", "ENE",
+            "E", "ESE", "SE", "SSE",
+            "S", "SSW", "SW", "WSW",
+            "W", "WNW", "NW", "NNW"
+        ];
+
+        // normalize to 0–360
+        deg = deg % 360;
+        if (deg < 0) deg += 360;
+
+        // each sector is 22.5°
+        const index = Math.round(deg / 22.5) % 16;
+
+        return directions[index];
+    }
+
     renderDetails() {
         // heading
         document.querySelector('header').classList.add('details');
         const heading = document.querySelector('header h1');
-        heading.textContent = `Weather in ${this.tracker.location}`;   
+        heading.textContent = `Weather in ${this.tracker.location}`;
 
         // show forecast
         this.sevenDaysForecastCard = document.createElement('div');
-        this.sevenDaysForecastCard.classList.add('forecast-card');
+        this.sevenDaysForecastCard.classList.add('info-card', 'forecast-card');
 
-        const h2 = document.createElement('h2');
-        h2.textContent = '7-day forecast';
-        this.sevenDaysForecastCard.appendChild(h2);
+        const headingForecast = document.createElement('h2');
+        headingForecast.textContent = '7-day forecast';
+        this.sevenDaysForecastCard.appendChild(headingForecast);
 
         this.tracker.data.forecast.forEach((item) => {
             // display day of the week
@@ -129,12 +147,40 @@ export class WeatherDisplay {
             this.sevenDaysForecastCard.append(dayOfTheWeekEl, weatherIcon, minmax);
         });
 
+        // wind gust information
+        const windCardEl = document.createElement('div');
+        windCardEl.classList.add('info-card', 'wind-card');
+
+        const headingWind = document.createElement('h2');
+        headingWind.textContent = 'wind';
+        windCardEl.appendChild(headingWind);
+
+        const windTableEl = document.createElement('table');
+        windTableEl.classList.add('wind-table');
+        windTableEl.innerHTML = `
+            <tr>
+                <th>Speed</th>
+                <td>${this.tracker.data.windspeed} km/h<td>
+            </tr>
+
+            <tr>
+                <th>Gusts</th>
+                <td>${this.tracker.data.windgust} km/h<td>
+            </tr>
+
+            <tr>
+                <th>Direction</th>
+                <td>${this.tracker.data.winddir}${WeatherDisplay.DEG} ${this.windDirection(this.tracker.data.winddir)}<td>
+            </tr>
+        `;
+        windCardEl.appendChild(windTableEl);
+
         // control buttons
         this.closeBtn = document.createElement('img');
         this.closeBtn.src = closeSvg;
         this.closeBtn.alt = '';
         this.closeBtn.classList.add('close-icon');
 
-        return [this.sevenDaysForecastCard, this.closeBtn];
+        return [this.sevenDaysForecastCard, this.closeBtn, windCardEl];
     }
 }

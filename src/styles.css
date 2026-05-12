@@ -54,9 +54,11 @@ h1 {
 .search-form {
     margin: 10px auto 20px;
     width: 500px;
+
     @media (max-width: 900px) {
         width: 400px;
     }
+
     position: relative;
 }
 
@@ -143,7 +145,7 @@ h1 {
     font-size: 2.5rem;
 }
 
-.card-description, 
+.card-description,
 .card-humidity {
     font-size: 0.9rem;
 }
@@ -161,29 +163,27 @@ header.details {
     text-align: center;
 }
 
-.forecast-card {
+.info-card {
     background-color: white;
+    padding: 5px 10px;
+    border-radius: 12px;
+    box-shadow: 8px 8px 12px gray;
+}
+
+.info-card.forecast-card {
     display: grid;
     grid-template-columns: 1fr 30px 1fr;
     align-items: center;
     justify-items: center;
-    padding: 10px;
-    border-radius: 12px;
-    box-shadow: 8px 8px 12px gray;
     row-gap: 10px;
-    /* border: 1px solid green; */
     font-size: 1.3rem;
 }
 
-.forecast-card > * {
-    /* border: 1px solid red; */
-}
-
-.forecast-card h2 {
+.info-card h2 {
     grid-column: 1 / -1;
-    justify-self: center;
+    justify-self: start;
     font-size: 2.0rem;
-    text-decoration: underline;
+    font-variant: small-caps;
 }
 
 .forecast-day {
@@ -198,6 +198,29 @@ header.details {
 
 .forecast-minmax {
     justify-self: end;
+}
+
+.info-card.wind-card {
+    width: 50%;
+}
+
+.wind-card table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.wind-card tr:not(:last-child) td,
+.wind-card tr:not(:last-child) th {
+    padding: 5px;
+    border-bottom: 1px solid black;
+}
+
+.wind-card table td {
+    text-align: right;
+}
+
+.wind-card table th {
+    text-align: left;
 }
 
 .close-icon {
@@ -219,5 +242,3 @@ header.details {
     text-align: center;
     font-style: italic;
 }
-
-

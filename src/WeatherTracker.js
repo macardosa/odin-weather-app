@@ -20,6 +20,7 @@ export class WeatherTracker {
             "feelslike": json?.currentConditions?.feelslike,
             "windspeed": json?.currentConditions?.windspeed,
             "windgust": json?.currentConditions?.windgust,
+            "winddir": json?.currentConditions?.winddir,
             "sunrise": json?.currentConditions?.sunrise,
             "sunset": json?.currentConditions?.sunset,
             "icon": json?.currentConditions?.icon,
