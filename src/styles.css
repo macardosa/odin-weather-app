@@ -27,7 +27,6 @@ header {
     justify-items: center;
     max-width: 400px;
     column-gap: 20px;
-    /* border: 1px solid red; */
 }
 
 h1 {
@@ -85,7 +84,6 @@ h1 {
 }
 
 .cards-wrapper {
-    flex: 1;
     display: grid;
     grid-template-columns: repeat(auto-fit, 450px);
     grid-auto-rows: max-content;
