@@ -1,4 +1,4 @@
-import { WeatherDisplay } from "./WeatherDisplay.js";
+import { WeatherDisplay } from './WeatherDisplay.js';
 import refreshSvg from './assets/icons/refresh.svg';
 import searchSvg from './assets/icons/search.svg';
 
@@ -35,7 +35,7 @@ export class WeatherApp {
         refreshIcon.classList.add('refresh-icon');
         refreshIcon.addEventListener('click', async () => {
             await this.refresh();
-        })
+        });
 
         const lastUpdate = document.createElement('div');
         lastUpdate.classList.add('last-update');
@@ -44,7 +44,7 @@ export class WeatherApp {
 
         // Cards wrapper
         const cardsWrapper = document.createElement('div');
-        cardsWrapper.classList.add('cards-wrapper');
+        cardsWrapper.classList.add('wrapper', 'cards-wrapper');
 
         // Search form
         const searchForm = document.createElement('div');
@@ -60,11 +60,11 @@ export class WeatherApp {
                 if (locationName) {
                     await this.add(locationName);
 
-                    searchBar.value = "";
+                    searchBar.value = '';
                     searchBar.blur();
                 }
             }
-        })
+        });
 
         const searchIcon = document.createElement('img');
         searchIcon.src = searchSvg;
@@ -93,20 +93,15 @@ export class WeatherApp {
 
         // Cards wrapper
         const cardsWrapper = document.createElement('div');
-        cardsWrapper.classList.add('cards-wrapper');
+        cardsWrapper.classList.add('wrapper', 'info-wrapper');
 
         main.append(header, cardsWrapper);
     }
 
-    showLastTimeUpdated(lastUpdate) {
-        document.querySelector('.last-update').textContent =
-            `Updated ${lastUpdate.toLocaleTimeString()}`;
-    }
-
     addToDOM(elements) {
-        const cardsWrapper = document.querySelector('.cards-wrapper');
+        const wrapper = document.querySelector('.wrapper');
         elements.forEach((el) => {
-            cardsWrapper.appendChild(el)
+            wrapper.appendChild(el);
         });
     }
 
@@ -115,14 +110,19 @@ export class WeatherApp {
         for (const item of this.weatherList) {
             this.addToDOM(item.renderCard());
 
-            item.card.addEventListener('click', () => {
+            item.card.addEventListener('click', async () => {
                 this.renderInfoLayout();
+                await item.refresh();
                 this.addToDOM(item.renderDetails());
-                this.showLastTimeUpdated(item.tracker.lastUpdate);
 
                 item.closeBtn.addEventListener('click', () => {
                     this.render();
-                })
+                });
+
+                item.refreshBtn.addEventListener('click', async () => {
+                    await item.refresh();
+                    item.updateDetails();
+                });
             });
         }
     }
@@ -135,19 +135,21 @@ export class WeatherApp {
         weatherDisplayObj.card.addEventListener('click', () => {
             this.renderInfoLayout();
             this.addToDOM(weatherDisplayObj.renderDetails());
-            this.showLastTimeUpdated(weatherDisplayObj.tracker.lastUpdate);
 
             weatherDisplayObj.closeBtn.addEventListener('click', () => {
                 this.render();
-            })
+            });
+
+            weatherDisplayObj.refreshBtn.addEventListener('click', async () => {
+                await weatherDisplayObj.refresh();
+                weatherDisplayObj.updateDetails();
+            });
         });
 
         this.weatherList.push(weatherDisplayObj);
     }
 
     async refresh() {
-        await Promise.all(
-            this.weatherList.map(el => el.update())
-        );
+        await Promise.all(this.weatherList.map((el) => el.update()));
     }
 }

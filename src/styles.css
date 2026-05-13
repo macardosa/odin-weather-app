@@ -15,6 +15,7 @@ main {
     height: 100vh;
     padding-inline: 20px 10px;
     min-height: 0;
+    align-items: center;
 }
 
 header {
@@ -163,6 +164,15 @@ header.details {
     text-align: center;
 }
 
+.info-wrapper {
+    width: 100%;
+    margin-top: 20px;
+    max-width: 700px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
 .info-card {
     background-color: white;
     padding: 5px 10px;
@@ -171,6 +181,7 @@ header.details {
 }
 
 .info-card.forecast-card {
+    grid-column: 1 / -1;
     display: grid;
     grid-template-columns: 1fr 30px 1fr;
     align-items: center;
@@ -201,7 +212,7 @@ header.details {
 }
 
 .info-card.wind-card {
-    width: 50%;
+    grid-column: 1;
 }
 
 .wind-card table {
@@ -223,15 +234,28 @@ header.details {
     text-align: left;
 }
 
-.close-icon {
-    grid-column: 1 / -1;
+/* visibility */
+.visibility-card :not(:first-child),
+.humidity-card :not(:first-child),
+.precipitation-card :not(:first-child),
+.pressure-card :not(:first-child) {
+    text-align: center;
+}
+
+.info-large {
+    font-size: 2.7rem;
+}
+
+.close-icon,
+.info-refresh-icon {
     justify-self: center;
     display: block;
     width: 50px;
     transition: transform 0.2s ease;
 }
 
-.close-icon:hover {
+.close-icon:hover,
+.info-refresh-icon:hover {
     cursor: pointer;
     transform: scale(1.1);
 }
