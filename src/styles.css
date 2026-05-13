@@ -94,12 +94,13 @@ h1 {
     overflow-x: hidden;
     scrollbar-color: black;
     scrollbar-width: thin;
+    scrollbar-gutter: stable;
     margin-right: 10px;
     padding: 10px;
     outline: none;
     justify-content: center;
     max-width: 1400px;
-    min-height: 0;
+    width: 100%;
 }
 
 .card {
