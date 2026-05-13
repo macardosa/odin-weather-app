@@ -124,7 +124,7 @@ export class WeatherApp {
         for (const item of this.weatherList) {
             this.addToDOM(item.renderCard());
 
-            item.card.onclick = async () => {
+            item.card.querySelector('.expand-card-btn').onclick = async () => {
                 this.renderInfoLayout();
                 await item.refresh();
                 this.addToDOM(item.renderDetails());
@@ -138,7 +138,20 @@ export class WeatherApp {
                     item.updateDetails();
                 };
             };
+
+            item.card.querySelector('.delete-card-btn').onclick = () => {
+                this.remove(item);
+                item.card.remove(); // delete from DOM
+            };
         }
+    }
+
+    remove(itemToRemove) {
+        this.weatherList = this.weatherList.filter(
+            item => item !== itemToRemove
+        );
+
+        this.save();
     }
 
     async add(location) {
@@ -146,23 +159,26 @@ export class WeatherApp {
 
         this.addToDOM(weatherDisplayObj.renderCard());
 
-        weatherDisplayObj.card.addEventListener('click', () => {
+        weatherDisplayObj.card.querySelector('.expand-card-btn').onclick = () => {
             this.renderInfoLayout();
             this.addToDOM(weatherDisplayObj.renderDetails());
 
-            weatherDisplayObj.closeBtn.addEventListener('click', () => {
+            weatherDisplayObj.closeBtn.onclick = () => {
                 this.render();
-            });
+            };
 
-            weatherDisplayObj.refreshBtn.addEventListener('click', async () => {
+            weatherDisplayObj.refreshBtn.onclick = async () => {
                 await weatherDisplayObj.refresh();
                 weatherDisplayObj.updateDetails();
-            });
-        });
+            };
+        };
+
+        weatherDisplayObj.card.querySelector('.delete-card-btn').onclick = () => {
+            this.remove(weatherDisplayObj);
+            weatherDisplayObj.card.remove(); // delete from DOM
+        };
 
         this.weatherList.push(weatherDisplayObj);
-
-        // this.save();
     }
 
     async refresh() {

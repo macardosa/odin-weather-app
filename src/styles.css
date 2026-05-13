@@ -87,10 +87,11 @@ h1 {
 .cards-wrapper {
     flex: 1;
     display: grid;
-    grid-template-columns: repeat(auto-fit, 400px);
+    grid-template-columns: repeat(auto-fit, 450px);
     grid-auto-rows: max-content;
     gap: 30px;
     overflow-y: auto;
+    overflow-x: hidden;
     scrollbar-color: black;
     scrollbar-width: thin;
     margin-right: 10px;
@@ -105,18 +106,13 @@ h1 {
     background-color: rgba(128, 0, 128, 0.1);
     box-shadow: 1px 2px 12px #daa3da;
     border-radius: 12px;
-    padding: 5px 10px;
+    padding: 25px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr;
     font-family: 'Inter', sans-serif;
     width: 100%;
-    transition: transform 0.2s ease;
-}
-
-.card:hover {
-    cursor: pointer;
-    transform: scale(1.03);
+    position: relative;
 }
 
 .card-location {
@@ -155,6 +151,32 @@ h1 {
     grid-column: 1 / -1;
     grid-row: 2;
     align-self: end;
+}
+
+.delete-card-btn,
+.expand-card-btn {
+    position: absolute;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+    opacity: 0.5;
+    padding: 2px;
+}
+
+.delete-card-btn {
+    left: 0;
+    top: 0;
+}
+
+.expand-card-btn {
+    right: 0;
+    top: 0;
+}
+
+.delete-card-btn:hover,
+.expand-card-btn:hover {
+    cursor: pointer;
+    transform: scale(1.1);
 }
 
 /* Layout for showing more information about a selected location */

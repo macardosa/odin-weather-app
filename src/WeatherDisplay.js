@@ -1,6 +1,7 @@
 import { WeatherTracker } from './WeatherTracker.js';
 import closeSvg from './assets/icons/close.svg';
 import refreshSvg from './assets/icons/refresh.svg';
+import expandSvg from './assets/icons/open_in_full.svg';
 
 export class WeatherDisplay {
     static DEG = '\u00B0';
@@ -59,7 +60,19 @@ export class WeatherDisplay {
         shortDescription.textContent = this.tracker.data.description;
         shortDescription.classList.add('card-description');
 
-        this.card.append(locationName, weatherIcon, tempAndHumid, shortDescription);
+        // button to delete card
+        const delBtn = document.createElement('img');
+        delBtn.classList.add('delete-card-btn');
+        delBtn.src = closeSvg;
+        delBtn.alt = '';
+
+        // button to open details
+        const expandBtn = document.createElement('img');
+        expandBtn.classList.add('expand-card-btn');
+        expandBtn.src = expandSvg;
+        expandBtn.alt = '';
+
+        this.card.append(locationName, weatherIcon, tempAndHumid, shortDescription, delBtn, expandBtn);
 
         this.card.classList.add('card');
         return [this.card];
