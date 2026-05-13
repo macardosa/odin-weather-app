@@ -12,11 +12,23 @@ export class WeatherApp {
 
         app.renderCardsLayout();
 
+        // add passed locations
         for (const location of locations) {
             await app.add(location);
         }
 
+        // add locations saved in localStorage
+        const savedLocations = JSON.parse(localStorage.getItem('weatherLocations')) || [];
+        for (const location of savedLocations) {
+            await app.add(location);
+        }
+
         return app;
+    }
+
+    save() {
+        const locations = this.weatherList.map(w => w.tracker.location);
+        localStorage.setItem('weatherLocations', JSON.stringify(locations));
     }
 
     renderCardsLayout() {
@@ -59,6 +71,7 @@ export class WeatherApp {
                 const locationName = searchBar.value.trim();
                 if (locationName) {
                     await this.add(locationName);
+                    this.save();
 
                     searchBar.value = '';
                     searchBar.blur();
@@ -116,9 +129,9 @@ export class WeatherApp {
                 await item.refresh();
                 this.addToDOM(item.renderDetails());
 
-                item.closeBtn.addEventListener('click', () => {
+                item.closeBtn.onclick = () => {
                     this.render();
-                });
+                };
 
                 item.refreshBtn.onclick = async () => {
                     await item.refresh();
@@ -148,6 +161,8 @@ export class WeatherApp {
         });
 
         this.weatherList.push(weatherDisplayObj);
+
+        // this.save();
     }
 
     async refresh() {
