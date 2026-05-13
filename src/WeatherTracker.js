@@ -75,10 +75,10 @@ export class WeatherTracker {
   }
 
   get temperature() {
-    if (this.data?.temperature == null) return null;
+    if (this.data?.feelslike == null) return null;
 
     return Math.round(
-      WeatherTracker.fahrenheitToCelsius(this.data.temperature)
+      WeatherTracker.fahrenheitToCelsius(this.data.feelslike)
     );
   }
 
