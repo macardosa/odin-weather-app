@@ -174,6 +174,28 @@ export class WeatherDisplay {
         }
     }
 
+    getMoonPhaseName(phase) {
+        if (phase === 0 || phase === 1) return "New Moon";
+        if (phase > 0 && phase < 0.25) return "Waxing Crescent";
+        if (phase === 0.25) return "First Quarter";
+        if (phase > 0.25 && phase < 0.5) return "Waxing Gibbous";
+        if (phase === 0.5) return "Full Moon";
+        if (phase > 0.5 && phase < 0.75) return "Waning Gibbous";
+        if (phase === 0.75) return "Last Quarter";
+        if (phase > 0.75 && phase < 1) return "Waning Crescent";
+        return "Unknown";
+    }
+
+    categorizeCloudCover(percent) {
+        if (typeof percent !== 'number' || isNaN(percent)) return "Invalid input";
+        if (percent <= 10) return "Clear";
+        if (percent <= 30) return "Mostly Clear";
+        if (percent <= 50) return "Partly Cloudy";
+        if (percent <= 70) return "Mostly Cloudy";
+        if (percent <= 90) return "Cloudy";
+        return "Overcast";
+    }
+
     renderDetails() {
         // heading
         document.querySelector('header').classList.add('details');
@@ -285,6 +307,42 @@ export class WeatherDisplay {
             <p>${this.categorizeUvIndex(this.tracker.data.uvindex)}</p>
         `;
 
+        // Cloud cover
+        this.cloudcoverCardEl = document.createElement('div');
+        this.cloudcoverCardEl.classList.add('info-card', 'cloudcover-card');
+        this.cloudcoverCardEl.innerHTML = `
+            <h2>Cloudcover</h2>
+            <div class='info-large'>${Math.round(this.tracker.data.cloudcover)}%</div>
+            <p>${this.categorizeCloudCover(this.tracker.data.cloudcover)}</p>
+        `;
+
+        // Moonphase, sunset and sunrise
+        this.astrologyCardEl = document.createElement('div');
+        this.astrologyCardEl.classList.add('info-card', 'astrology-card');
+
+        const headingAstrology = document.createElement('h2');
+        headingAstrology.textContent = 'Astrology';
+        this.astrologyCardEl.appendChild(headingAstrology);
+
+        const astrologyTableEl = document.createElement('table');
+        astrologyTableEl.innerHTML = `
+            <tr>
+                <th>Moon phase</th>
+                <td>${this.getMoonPhaseName(this.tracker.data.moonphase)}<td>
+            </tr>
+
+            <tr>
+                <th>Sunrise</th>
+                <td>${this.tracker.data.sunrise}<td>
+            </tr>
+
+            <tr>
+                <th>Sunset</th>
+                <td>${this.tracker.data.sunset}<td>
+            </tr>
+        `;
+        this.astrologyCardEl.appendChild(astrologyTableEl);
+
         // control buttons
         this.closeBtn = document.createElement('img');
         this.closeBtn.src = closeSvg;
@@ -304,6 +362,8 @@ export class WeatherDisplay {
             this.precipitationCardEl,
             this.pressureCardEl,
             this.uvindexCardEl,
+            this.cloudcoverCardEl,
+            this.astrologyCardEl,
             this.closeBtn,
             this.refreshBtn,
         ];
@@ -406,6 +466,36 @@ export class WeatherDisplay {
                 `${Math.round(this.tracker.data.uvindex)}`;
             this.uvindexCardEl.querySelector('p').textContent =
                 this.categorizeUvIndex(this.tracker.data.uvindex);
+        }
+
+        // --- Update Cloud Cover ---
+        if (this.cloudcoverCardEl) {
+            const cloudPercentEl = this.cloudcoverCardEl.querySelector('.info-large');
+            const cloudCategoryEl = this.cloudcoverCardEl.querySelector('p');
+
+            cloudPercentEl.textContent = `${Math.round(this.tracker.data.cloudcover)}%`;
+            cloudCategoryEl.textContent = this.categorizeCloudCover(this.tracker.data.cloudcover);
+        }
+
+        // --- Update Astrology Card ---
+        if (this.astrologyCardEl) {
+            const astrologyTableEl = this.astrologyCardEl.querySelector('table');
+            astrologyTableEl.innerHTML = `
+            <tr>
+                <th>Moon phase</th>
+                <td>${this.getMoonPhaseName(this.tracker.data.moonphase)}<td>
+            </tr>
+
+            <tr>
+                <th>Sunrise</th>
+                <td>${this.tracker.data.sunrise}<td>
+            </tr>
+
+            <tr>
+                <th>Sunset</th>
+                <td>${this.tracker.data.sunset}<td>
+            </tr>
+        `;
         }
     }
 }

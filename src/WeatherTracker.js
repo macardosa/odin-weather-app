@@ -31,6 +31,10 @@ export class WeatherTracker {
       dew: WeatherTracker.fahrenheitToCelsius(json?.currentConditions?.dew),
       pressure: json?.currentConditions?.pressure,
       uvindex: json?.currentConditions?.uvindex,
+      moonphase: json?.currentConditions?.moonphase,
+      sunset: json?.currentConditions?.sunset,
+      sunrise: json?.currentConditions?.sunrise,
+      cloudcover: json?.currentConditions?.cloudcover,
     };
 
     obj.forecast = [];

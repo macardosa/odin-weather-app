@@ -178,6 +178,9 @@ header.details {
     padding: 5px 10px;
     border-radius: 12px;
     box-shadow: 8px 8px 12px gray;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .info-card.forecast-card {
@@ -215,30 +218,35 @@ header.details {
     grid-column: 1;
 }
 
-.wind-card table {
+.wind-card table,
+.astrology-card table {
     width: 100%;
     border-collapse: collapse;
 }
 
 .wind-card tr:not(:last-child) td,
-.wind-card tr:not(:last-child) th {
+.wind-card tr:not(:last-child) th,
+.astrology-card tr:not(:last-child) td,
+.astrology-card tr:not(:last-child) th {
     padding: 5px;
     border-bottom: 1px solid black;
 }
 
-.wind-card table td {
+.wind-card table td,
+.astrology-card table td {
     text-align: right;
 }
 
-.wind-card table th {
+.wind-card table th,
+.astrology-card table th {
     text-align: left;
 }
 
-/* visibility */
 .visibility-card :not(:first-child),
 .humidity-card :not(:first-child),
 .precipitation-card :not(:first-child),
-.pressure-card :not(:first-child) {
+.pressure-card :not(:first-child),
+.cloudcover-card :not(:first-child) {
     text-align: center;
 }
 

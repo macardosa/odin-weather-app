@@ -78,7 +78,7 @@ export class WeatherApp {
 
     renderInfoLayout() {
         const main = document.querySelector('main');
-        main.innerHTML = '';
+        main.replaceChildren();
 
         // Header
         const header = document.createElement('header');
@@ -107,10 +107,11 @@ export class WeatherApp {
 
     async render() {
         this.renderCardsLayout();
+
         for (const item of this.weatherList) {
             this.addToDOM(item.renderCard());
 
-            item.card.addEventListener('click', async () => {
+            item.card.onclick = async () => {
                 this.renderInfoLayout();
                 await item.refresh();
                 this.addToDOM(item.renderDetails());
@@ -119,11 +120,11 @@ export class WeatherApp {
                     this.render();
                 });
 
-                item.refreshBtn.addEventListener('click', async () => {
+                item.refreshBtn.onclick = async () => {
                     await item.refresh();
                     item.updateDetails();
-                });
-            });
+                };
+            };
         }
     }
 
