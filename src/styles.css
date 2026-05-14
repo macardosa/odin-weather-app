@@ -56,7 +56,7 @@ h1 {
     width: 500px;
 
     @media (max-width: 900px) {
-        width: 400px;
+        width: min(400px, 90%);
     }
 
     position: relative;
@@ -85,7 +85,7 @@ h1 {
 
 .cards-wrapper {
     display: grid;
-    grid-template-columns: repeat(auto-fit, 450px);
+    grid-template-columns: repeat(auto-fit, min(450px, 100%));
     grid-auto-rows: max-content;
     gap: 30px;
     overflow-y: auto;
@@ -102,27 +102,32 @@ h1 {
 }
 
 .card {
+    font-family: 'Inter', sans-serif;
+    width: 100%;
+    position: relative;
     background-color: rgba(128, 0, 128, 0.1);
     box-shadow: 1px 2px 12px #daa3da;
     border-radius: 12px;
     padding: 25px;
+    padding-bottom: 10px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    font-family: 'Inter', sans-serif;
-    width: 100%;
-    position: relative;
+    row-gap: 10px;
+}
+
+.location-and-icon {
+    grid-column: 1 / 3;
+    grid-row: 1;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
 }
 
 .card-location {
-    grid-column: 1;
-    grid-row: 1;
     font-size: 2.0rem;
 }
 
 .card-icon {
-    grid-column: 2 / 3;
-    grid-row: 1;
     justify-self: center;
     display: block;
     height: 50px;
@@ -135,6 +140,7 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    white-space: nowrap;
 }
 
 .card-temperature {

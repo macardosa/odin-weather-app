@@ -28,9 +28,13 @@ export class WeatherDisplay {
         this.card = document.createElement('div');
 
         // name of the location
+        const locationAndIcon = document.createElement('div');
+        locationAndIcon.classList.add('location-and-icon');
+
         const locationName = document.createElement('h2');
         locationName.textContent = this.tracker.data.location;
         locationName.classList.add('card-location');
+        locationAndIcon.appendChild(locationName);
 
         // weather icon reflecting the weather
         const weatherIcon = document.createElement('img');
@@ -38,6 +42,7 @@ export class WeatherDisplay {
             weatherIcon.src = src;
         });
         weatherIcon.classList.add('card-icon');
+        locationAndIcon.appendChild(weatherIcon);
 
         // current temperature
         const tempAndHumid = document.createElement('div');
@@ -72,7 +77,7 @@ export class WeatherDisplay {
         expandBtn.src = expandSvg;
         expandBtn.alt = '';
 
-        this.card.append(locationName, weatherIcon, tempAndHumid, shortDescription, delBtn, expandBtn);
+        this.card.append(locationAndIcon, tempAndHumid, shortDescription, delBtn, expandBtn);
 
         this.card.classList.add('card');
         return [this.card];
